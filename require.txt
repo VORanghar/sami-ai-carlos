@@ -1,0 +1,10 @@
+flask
+flask-cors
+mysql-connector-python
+pandas
+scikit-learn
+python-dotenv
+
+
+
+command => pip3 install -r require.txt
