@@ -5,3 +5,7 @@ mysql-connector-python
 pandas
 scikit-learn
 python-dotenv
+
+
+
+command => pip3 install -r requirements.txt
