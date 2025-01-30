@@ -1,0 +1,37 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+/controllers/__pycache_/
+/models/__pycache_/
+/views/__pycache_/
+
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore the .DS_Store file (macOS-specific)
+.DS_Store
+
+# Ignore logs
+*.log
+
+# Ignore database files
+*.db
+
+# Ignore compiled files
+*.so
+*.dll
+*.dylib
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore config files (for security)
+*.env
+*.json
+*.yml
+
+# Ignore the .git directory
+.git/
