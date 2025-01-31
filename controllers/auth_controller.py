@@ -8,11 +8,16 @@ def register():
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    role_id = data.get('role_id')
+    if not role_id:
+        role_id = 1
+    else:
+        role_id = int(role_id)
 
     if not username or not password or not email:
-        return json_response({'message': 'Username, password, and email are required', 'status': 3}, 400)
+        return json_response({'message': 'Username, password and email are required', 'status': 3}, 400)
 
-    success, message = register_user(username, email, password)
+    success, message = register_user(username, email, password,role_id)
     if success:
         return json_response({'message': message, 'status': 1}, 201)
     return json_response({'message': message, 'status': 2}, 400)
@@ -26,7 +31,7 @@ def login():
     if not email or not password:
         return json_response({'message': 'Email and password are required', 'status': 3}, 400)
 
-    token, message = authenticate_user(email, password)
+    token, message,role_id = authenticate_user(email, password)
     if token:
-        return json_response({'status': 1, 'message': 'Login successful', 'token': token}, 200)
+        return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id}, 200)
     return json_response({'status': 2, 'message': message}, 401)

@@ -33,7 +33,7 @@ def create_token(user_id):
     return token
 
 # Function to register a new user
-def register_user(username, email, password):
+def register_user(username, email, password,role_id):
     hashed_password = hash_password(password)
     try:
         connection = get_db_connection()
@@ -45,7 +45,7 @@ def register_user(username, email, password):
         if user:
             return None, "Username already exists"
         
-        cursor.execute("INSERT INTO users (username, password,email) VALUES (%s, %s,%s)", (username, hashed_password,email))
+        cursor.execute("INSERT INTO users (username, password,email,role_id) VALUES (%s, %s,%s,%s)", (username, hashed_password,email,role_id))
         connection.commit()
         cursor.close()
         connection.close()
@@ -69,8 +69,9 @@ def authenticate_user(email, password):
 
         if user:
             user_id = user[0]
+            role_id=user[1]
             token = create_token(user_id)
-            return token, None
+            return token,role_id,None
         else:
             return None, "Invalid email or password"
         
