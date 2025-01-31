@@ -11,9 +11,9 @@ load_dotenv()
 # MySQL connection details
 def get_db_connection():
     connection = connect(
-        host=env['HOST'],         # Your MySQL host
-        user=env['USER'],              # Your MySQL username
-        password=env['PASSWORD'],              # Your MySQL password
+        host=env['DB_HOST'],         # Your MySQL host
+        user=env['DB_USER'],              # Your MySQL username
+        password=env['DB_PASSWORD'],              # Your MySQL password
         database=env['DATABASE']        # Your database name
     )
     return connection
