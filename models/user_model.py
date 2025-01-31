@@ -4,14 +4,17 @@ import jwt
 from flask import current_app
 from mysql.connector import Error
 from mysql.connector import connect
+from os import environ as env
+from dotenv import load_dotenv
+load_dotenv()
 
 # MySQL connection details
 def get_db_connection():
     connection = connect(
-        host='localhost',         # Your MySQL host
-        user='root',              # Your MySQL username
-        password='',              # Your MySQL password
-        database='sami_ai'        # Your database name
+        host=env['HOST'],         # Your MySQL host
+        user=env['USER'],              # Your MySQL username
+        password=env['PASSWORD'],              # Your MySQL password
+        database=env['DATABASE']        # Your database name
     )
     return connection
 

@@ -19,5 +19,5 @@ def create_app():
 # This ensures the app is only created when we run it directly, avoiding circular imports
 if __name__ == '__main__':
     app = create_app()
-    #app.run(debug=True)
-    app.run(host='103.164.67.19', port=5000, debug=True)
+    app.run(debug=True)
+    # app.run(host='103.164.67.19', port=5000, debug=True)
