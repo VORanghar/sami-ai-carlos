@@ -6,7 +6,7 @@ pip install python-dotenv
 
 env file 
 MODE='development'
-HOST='localhost'
-USER='root'
-PASSWORD=''
+DB_HOST='localhost'
+DB_USER='root'
+DB_PASSWORD=''
 DATABASE='sami_ai'
