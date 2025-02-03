@@ -8,6 +8,7 @@ from os import environ as env
 from dotenv import load_dotenv
 load_dotenv()
 
+
 blacklist = set()
 
 # MySQL connection details
@@ -133,6 +134,7 @@ def authenticate_user(email, password):
 
 
 def logout_user(token):
+    from sami_ai_python.app import SECRET_KEY  # Import SECRET_KEY from app.py
     if not token:
         return {'message': 'Token is missing'}, 400
 

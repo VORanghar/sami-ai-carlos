@@ -129,6 +129,33 @@ ALTER TABLE `role_permissions`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `permission_slug`, `description`) VALUES
+(1, 'Can Edit Post', 'edit_post', 'Allows editing of posts'),
+(2, 'Can Delete User', 'delete_user', 'Allows deletion of users'),
+(3, 'Can View Dashboard', 'view_dashboard', 'Allows access to the dashboard');
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `role_slug`) VALUES
+(1, 'Admin', 'admin'),
+(2, 'Internal Team', 'internal_team'),
+(3, 'External Client', 'external_client');
+
+--
+-- Dumping data for table `role_permissions`
+--
+
+INSERT INTO `role_permissions` (`id`, `role_id`, `permission_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
