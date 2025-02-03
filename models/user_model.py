@@ -129,6 +129,9 @@ def authenticate_user(email, password):
             role_id = user[4]
             permissions = get_permissions_for_role(role_id)
             token = create_token(user_id)
+            # Check if token is in bytes, then decode it to string
+            if isinstance(token, bytes):
+                token = token.decode('utf-8')
             return token, role_id, permissions, None
         else:
             return None, "Invalid email or password"
