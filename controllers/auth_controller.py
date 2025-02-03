@@ -1,6 +1,8 @@
 from flask import request, jsonify
 from models.user_model import register_user, authenticate_user
 from views.responses import json_response
+import jwt
+
 
 # Registration route
 def register():
@@ -37,3 +39,22 @@ def login():
     if token:
         return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id,'permissions':permissions}, 200)
     return json_response({'status': 2, 'message': message}, 401)
+
+
+#logout functionality
+
+def logout():
+    token = request.headers.get('Authorization', '').split(' ')[-1]
+    
+    if not token:
+        return jsonify({'message': 'Token is missing'}), 400
+
+    try:
+        jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        blacklist.add(token)
+        return jsonify({'message': 'Logged out successfully'})
+
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        return jsonify({'message': 'Invalid or expired token'}), 401
+
+

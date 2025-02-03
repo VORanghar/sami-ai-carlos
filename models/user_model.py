@@ -8,6 +8,8 @@ from os import environ as env
 from dotenv import load_dotenv
 load_dotenv()
 
+blacklist = set()
+
 # MySQL connection details
 def get_db_connection():
     connection = connect(
@@ -39,11 +41,11 @@ def register_user(username, email, password,role_id):
         connection = get_db_connection()
         cursor = connection.cursor()
         
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user = cursor.fetchone()
+        # cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        # user = cursor.fetchone()
         
-        if user:
-            return None, "Username already exists"
+        # if user:
+        #     return None, "Username already exists"
         
         cursor.execute("INSERT INTO users (username, password,email,role_id) VALUES (%s, %s,%s,%s)", (username, hashed_password,email,role_id))
         connection.commit()
@@ -105,3 +107,30 @@ def authenticate_user(email, password):
         
     except Error as e:
         return None, str(e)
+
+
+
+# def logout():
+#     token = request.headers.get('Authorization')
+#     if not token:
+#         return jsonify({'message': 'Token is missing'}), 400
+
+#     try:
+#         # Remove the "Bearer " prefix
+#         token = token.split(' ')[1]
+#         # Optionally, you could also verify the token's validity here
+#         decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        
+#         # Add token to blacklist (in real systems, use Redis or a database)
+#         blacklist.add(token)
+        
+#         return jsonify({'message': 'Logged out successfully'})
+
+#     except jwt.ExpiredSignatureError:
+#         return jsonify({'message': 'Token has expired'}), 401
+#     except jwt.InvalidTokenError:
+#         return jsonify({'message': 'Invalid token'}), 401
+
+
+#def logout():
+
