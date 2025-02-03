@@ -21,7 +21,6 @@ from views.responses import json_response
 
 #     return json_response({"error": "Invalid file format, please upload a CSV file."}, 400)
 
-
 def upload_file():
     if 'file' not in request.files:
         return json_response({"error": "No file part"}, 400)

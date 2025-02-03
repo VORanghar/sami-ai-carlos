@@ -2,6 +2,7 @@ from flask import Flask
 from controllers.auth_controller import register, login
 from controllers.file_controller import upload_file
 from flask_cors import CORS
+from flask_caching import Cache
 
 def create_app():
     app = Flask(__name__)

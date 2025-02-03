@@ -24,6 +24,7 @@ def register():
 
 # Login route
 def login():
+    #cache.clear()
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -31,7 +32,8 @@ def login():
     if not email or not password:
         return json_response({'message': 'Email and password are required', 'status': 3}, 400)
 
-    token, message,role_id = authenticate_user(email, password)
+    #token,role_id,permissions,user_id = authenticate_user(email, password)
+    token,role_id,permissions,user_id = authenticate_user(email, password)
     if token:
-        return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id}, 200)
+        return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id,'permissions':permissions}, 200)
     return json_response({'status': 2, 'message': message}, 401)

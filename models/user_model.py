@@ -54,6 +54,32 @@ def register_user(username, email, password,role_id):
     except Error as e:
         return None, str(e)
 
+
+# Function to fetch permissions for a given role_id
+def get_permissions_for_role(role_id):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        # Assuming permissions are stored in a many-to-many relation between roles and permissions
+        cursor.execute("""
+            SELECT p.name
+            FROM permissions p
+            JOIN role_permissions rp ON p.id = rp.permission_id
+            WHERE rp.role_id = %s
+        """, (role_id,))
+        permissions = cursor.fetchall()
+        #print(permissions)
+
+        cursor.close()
+        connection.close()
+
+        # Return list of permission names (if there are any)
+        return [permission[0] for permission in permissions] if permissions else []
+
+    except Error as e:
+        return []        
+
 # Function to authenticate user during login
 def authenticate_user(email, password):
     hashed_password = hash_password(password)
@@ -69,9 +95,11 @@ def authenticate_user(email, password):
 
         if user:
             user_id = user[0]
-            role_id=user[1]
+            role_id = user[4]
+            permissions = get_permissions_for_role(role_id)
+            #print(permissions);
             token = create_token(user_id)
-            return token,role_id,None
+            return token,role_id,permissions,None
         else:
             return None, "Invalid email or password"
         
