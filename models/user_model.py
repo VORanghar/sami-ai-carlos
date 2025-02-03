@@ -84,6 +84,31 @@ def get_permissions_for_role(role_id):
         return []        
 
 # Function to authenticate user during login
+# def authenticate_user(email, password):
+#     hashed_password = hash_password(password)
+#     try:
+#         connection = get_db_connection()
+#         cursor = connection.cursor()
+
+#         cursor.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, hashed_password))
+#         user = cursor.fetchone()
+
+#         cursor.close()
+#         connection.close()
+
+#         if user:
+#             user_id = user[0]
+#             role_id = user[4]
+#             permissions = get_permissions_for_role(role_id)
+#             #print(permissions);
+#             token = create_token(user_id)
+#             return token,role_id,permissions,None
+#         else:
+#             return None, "Invalid email or password"
+        
+#     except Error as e:
+#         return None, str(e)
+
 def authenticate_user(email, password):
     hashed_password = hash_password(password)
     try:
@@ -91,7 +116,10 @@ def authenticate_user(email, password):
         cursor = connection.cursor()
 
         cursor.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, hashed_password))
-        user = cursor.fetchone()
+        user = cursor.fetchone()  # Fetch the first row (if any)
+
+        # If there's any unread result, we should consume it properly
+        cursor.fetchall()  # This ensures that any remaining result is cleared
 
         cursor.close()
         connection.close()
@@ -100,14 +128,14 @@ def authenticate_user(email, password):
             user_id = user[0]
             role_id = user[4]
             permissions = get_permissions_for_role(role_id)
-            #print(permissions);
             token = create_token(user_id)
-            return token,role_id,permissions,None
+            return token, role_id, permissions, None
         else:
             return None, "Invalid email or password"
         
     except Error as e:
         return None, str(e)
+
 
 
 
