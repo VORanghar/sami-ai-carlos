@@ -25,6 +25,22 @@ def register():
     return json_response({'message': message, 'status': 2}, 400)
 
 # Login route
+# def login():
+#     #cache.clear()
+#     data = request.get_json()
+#     email = data.get('email')
+#     password = data.get('password')
+
+#     if not email or not password:
+#         return json_response({'message': 'Email and password are required', 'status': 3}, 400)
+
+#     #token,role_id,permissions,user_id = authenticate_user(email, password)
+#     token,role_id,permissions,user_id = authenticate_user(email, password)
+#     if token:
+#         return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id,'permissions':permissions}, 200)
+#     return json_response({'status': 2, 'message': message}, 401)
+
+
 def login():
     #cache.clear()
     data = request.get_json()
@@ -34,11 +50,20 @@ def login():
     if not email or not password:
         return json_response({'message': 'Email and password are required', 'status': 3}, 400)
 
-    #token,role_id,permissions,user_id = authenticate_user(email, password)
-    token,role_id,permissions,user_id = authenticate_user(email, password)
-    if token:
-        return json_response({'status': 1, 'message': 'Login successful', 'token': token,'role_id':role_id,'permissions':permissions}, 200)
-    return json_response({'status': 2, 'message': message}, 401)
+    # Authenticate user
+    result = authenticate_user(email, password)
+    
+    # If result has 4 values (successful login), unpack them
+    if len(result) == 4:
+        token, role_id, permissions, user_id = result
+        if token:
+            return json_response({'status': 1, 'message': 'Login successful', 'token': token, 'role_id': role_id, 'permissions': permissions}, 200)
+    # If result has 2 values (failure), handle the error
+    elif len(result) == 2:
+        token, message = result
+        return json_response({'status': 2, 'message': message}, 401)
+    
+    return json_response({'status': 2, 'message': 'Unknown error occurred'}, 500)
 
 
 #logout functionality
