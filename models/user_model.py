@@ -66,7 +66,7 @@ def get_permissions_for_role(role_id):
 
         # Assuming permissions are stored in a many-to-many relation between roles and permissions
         cursor.execute("""
-            SELECT p.name
+            SELECT p.permission_slug
             FROM permissions p
             JOIN role_permissions rp ON p.id = rp.permission_id
             WHERE rp.role_id = %s
@@ -127,12 +127,14 @@ def authenticate_user(email, password):
         if user:
             user_id = user[0]
             role_id = user[4]
+            username = user[1]
+            email = user[2]
             permissions = get_permissions_for_role(role_id)
             token = create_token(user_id)
             # Check if token is in bytes, then decode it to string
             if isinstance(token, bytes):
                 token = token.decode('utf-8')
-            return token, role_id, permissions, None
+            return token, role_id, permissions,user_id,username,email
         else:
             return None, "Invalid email or password"
         

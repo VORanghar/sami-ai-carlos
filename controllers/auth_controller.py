@@ -54,10 +54,11 @@ def login():
     result = authenticate_user(email, password)
     
     # If result has 4 values (successful login), unpack them
-    if len(result) == 4:
-        token, role_id, permissions, user_id = result
+    if len(result) == 6:
+        token, role_id, permissions, user_id,username,email = result
+        #token, role_id, permissions, username, email = result
         if token:
-            return json_response({'status': 1, 'message': 'Login successful', 'token': token, 'role_id': role_id, 'permissions': permissions}, 200)
+            return json_response({'status': 1, 'message': 'Login successful', 'token': token, 'role_id': role_id, 'permissions': permissions,'username':username,'email':email}, 200)
     # If result has 2 values (failure), handle the error
     elif len(result) == 2:
         token, message = result
