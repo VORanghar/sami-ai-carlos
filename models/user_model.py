@@ -132,5 +132,15 @@ def authenticate_user(email, password):
 #         return jsonify({'message': 'Invalid token'}), 401
 
 
-#def logout():
+def logout_user(token):
+    if not token:
+        return {'message': 'Token is missing'}, 400
+
+    try:
+        jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        blacklist.add(token)  # Blacklist the token
+        return {'message': 'Logged out successfully'}, 200
+
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        return {'message': 'Invalid or expired token'}, 401
 

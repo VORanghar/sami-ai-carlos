@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from models.user_model import register_user, authenticate_user
+from models.user_model import register_user,authenticate_user,logout_user
 from views.responses import json_response
 import jwt
 
@@ -43,18 +43,27 @@ def login():
 
 #logout functionality
 
+# def logout():
+#     token = request.headers.get('Authorization', '').split(' ')[-1]
+    
+#     if not token:
+#         return jsonify({'message': 'Token is missing'}), 400
+
+#     try:
+#         jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+#         blacklist.add(token)
+#         return jsonify({'message': 'Logged out successfully'})
+
+#     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+#         return jsonify({'message': 'Invalid or expired token'}), 401
+
+
 def logout():
     token = request.headers.get('Authorization', '').split(' ')[-1]
-    
-    if not token:
-        return jsonify({'message': 'Token is missing'}), 400
+    response, status_code = logout_user(token)
+    return jsonify(response), status_code
 
-    try:
-        jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        blacklist.add(token)
-        return jsonify({'message': 'Logged out successfully'})
 
-    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
-        return jsonify({'message': 'Invalid or expired token'}), 401
+
 
 
