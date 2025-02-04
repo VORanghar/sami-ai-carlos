@@ -51,23 +51,56 @@ def upload_file():
 #     return json({response})
 
 
+# def getListingExternalClient():
+#     # Fetch the data from the model
+#     role_id = request.args.get('role_id', default=None, type=int)
+#     data = getDataExternalClient(role_id)
+
+#     # Format the data as a list of dictionaries to make it JSON-serializable
+#     response = []
+#     for user in data:
+#         response.append({
+#             'id': user[0],        
+#             'username': user[1],  
+#             'email': user[2],
+#             'role_id':user[4],   
+#             'created_at':user[6]
+#         })
+
+#     # Return the response as JSON
+#     return jsonify(response)
+
+
+
 def getListingExternalClient():
-    # Fetch the data from the model
-    role_id = request.args.get('role_id', default=None, type=int)
-    data = getDataExternalClient(role_id)
+    try:
+        # Fetch the data from the model
+        role_id = request.args.get('role_id', default=None, type=int)
+        data = getDataExternalClient(role_id)
 
-    # Format the data as a list of dictionaries to make it JSON-serializable
-    response = []
-    for user in data:
-        response.append({
-            'id': user[0],        
-            'username': user[1],  
-            'email': user[2],
-            'role_id':user[4],   
-            'created_at':user[6]
-        })
+        # Format the data as a list of dictionaries to make it JSON-serializable
+        response = []
+        for user in data:
+            response.append({
+                'id': user[0],        
+                'username': user[1],  
+                'email': user[2],
+                'role_id': user[4],   
+                'created_at': user[6]
+            })
 
-    # Return the response as JSON
-    return jsonify(response)
+        # Return the response as JSON
+        return jsonify(response)
+
+    except Exception as e:
+        # Log the exception (optional: you could use logging to capture this)
+        print(f"Error in getListingExternalClient: {str(e)}")
+        
+        # Return a JSON error message
+        return jsonify({'error': 'An error occurred while fetching data'}), 500
+
+
+
+
 
 

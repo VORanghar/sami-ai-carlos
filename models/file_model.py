@@ -84,29 +84,72 @@ def process_uploaded_file(file):
 
 
 
+# def getDataExternalClient(role_id=None):
+#     # Connect to the database
+#     connection = mysql.connector.connect(
+#         host="localhost",
+#         user="root",
+#         password="",
+#         database="sami_ai"
+#     )
+#     cursor = connection.cursor()
+    
+#     # Execute the query
+#     if role_id:
+#         query = "SELECT * FROM users WHERE role_id = %s"
+#         cursor.execute(query, (role_id,))
+#     else:
+#         query = "SELECT * FROM users"
+#         cursor.execute(query)
+    
+#     # Fetch all the results
+#     results = cursor.fetchall()
+    
+#     # Close the connection
+#     connection.close()
+    
+#     # Return the results
+#     return results
+
+
 def getDataExternalClient(role_id=None):
-    # Connect to the database
-    connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="sami_ai"
-    )
-    cursor = connection.cursor()
+    try:
+        # Connect to the database
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="sami_ai"
+        )
+        cursor = connection.cursor()
+
+        # Execute the query
+        if role_id:
+            query = "SELECT * FROM users WHERE role_id = %s"
+            cursor.execute(query, (role_id,))
+        else:
+            query = "SELECT * FROM users"
+            cursor.execute(query)
+
+        # Fetch all the results
+        results = cursor.fetchall()
+
+        # Return the results
+        return results
     
-    # Execute the query
-    if role_id:
-        query = "SELECT * FROM users WHERE role_id = %s"
-        cursor.execute(query, (role_id,))
-    else:
-        query = "SELECT * FROM users"
-        cursor.execute(query)
-    
-    # Fetch all the results
-    results = cursor.fetchall()
-    
-    # Close the connection
-    connection.close()
-    
-    # Return the results
-    return results
+    except mysql.connector.Error as db_error:
+        # Handle database connection or query errors
+        print(f"Database error: {str(db_error)}")
+        raise  # Re-raise the exception to be handled by the calling function
+
+    except Exception as e:
+        # Handle any other errors
+        print(f"Error in getDataExternalClient: {str(e)}")
+        raise  # Re-raise the exception
+
+    finally:
+        # Ensure that the database connection and cursor are always closed
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
