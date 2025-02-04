@@ -117,8 +117,8 @@ def getDataExternalClient(role_id=None):
         # Connect to the database
         connection = mysql.connector.connect(
             host="localhost",
-            user="root",
-            password="",
+            user="admin",
+            password="Mrmoon@1234",
             database="sami_ai"
         )
         cursor = connection.cursor()
