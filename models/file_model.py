@@ -207,3 +207,42 @@ def getDataExternalClient(role_id=None, page=1, per_page=10):
             cursor.close()
         if connection:
             connection.close()
+
+
+#delete user by id starts here
+
+def delete_user_by_id(user_id):
+    try:
+        # Establish a connection to the MySQL database
+        conn = mysql.connector.connect(
+            host="your_host",           # e.g. "localhost"
+            user="your_username",       # e.g. "root"
+            password="your_password",   # your database password
+            database="your_database"    # your database name
+        )
+        cursor = conn.cursor()
+
+        # Write the delete query, using placeholders to avoid SQL injection
+        delete_query = "DELETE FROM users WHERE id = %s"
+        
+        # Execute the query with the user ID
+        cursor.execute(delete_query, (user_id,))
+        
+        # Commit the changes to the database
+        conn.commit()
+
+        # Check how many rows were affected (i.e., deleted)
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+        
+    except mysql.connector.Error as e:
+        print(f"Error deleting user: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+#ends here            

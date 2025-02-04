@@ -140,6 +140,9 @@ def getListingExternalClient():
 
 
 
+#delete user functionality starts here
 
+
+#ends here
 
 

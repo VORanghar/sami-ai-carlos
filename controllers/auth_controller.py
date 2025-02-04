@@ -62,7 +62,7 @@ def login():
     # If result has 2 values (failure), handle the error
     elif len(result) == 2:
         token, message = result
-        return json_response({'status': 2, 'message': message}, 401)
+        return json_response({'status': 2, 'message': message}, 400)
     
     return json_response({'status': 2, 'message': 'Unknown error occurred'}, 500)
 
