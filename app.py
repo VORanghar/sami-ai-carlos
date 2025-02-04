@@ -16,7 +16,7 @@ def create_app():
     app.add_url_rule('/upload', 'upload', upload_file, methods=['POST'])
     #logout route
     app.add_url_rule('/logout', 'logout', logout, methods=['POST'])
-    app.add_url_rule('/get-listing-external-client', 'external_client_listing', getListingExternalClient, methods=['GET'])
+    app.add_url_rule('/get-listing', 'external_client_listing', getListingExternalClient, methods=['GET'])
 
     return app
 

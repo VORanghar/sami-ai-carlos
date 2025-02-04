@@ -84,7 +84,7 @@ def process_uploaded_file(file):
 
 
 
-def getDataExternalClient():
+def getDataExternalClient(role_id=None):
     # Connect to the database
     connection = mysql.connector.connect(
         host="localhost",
@@ -95,7 +95,12 @@ def getDataExternalClient():
     cursor = connection.cursor()
     
     # Execute the query
-    cursor.execute("SELECT * FROM users WHERE role_id=3")
+    if role_id:
+        query = "SELECT * FROM users WHERE role_id = %s"
+        cursor.execute(query, (role_id,))
+    else:
+        query = "SELECT * FROM users"
+        cursor.execute(query)
     
     # Fetch all the results
     results = cursor.fetchall()
