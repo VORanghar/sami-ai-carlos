@@ -55,8 +55,8 @@ CREATE TABLE `roles` (
 CREATE TABLE `role_permissions` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `permission_id` int(11CHARSET) NOT NULL
+) ENGINE=InnoDB DEFAULT =utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 

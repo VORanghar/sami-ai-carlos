@@ -1,6 +1,10 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
+from dotenv import load_dotenv
+import os
+import mysql.connector  # Ensure this import is include
+load_dotenv()
 
 # def process_uploaded_file(file):
 #     try:
@@ -72,3 +76,32 @@ def process_uploaded_file(file):
 
 
 
+# def getDataExternalClient():
+#     select * from users
+
+#     return 
+
+
+
+
+def getDataExternalClient():
+    # Connect to the database
+    connection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="sami_ai"
+    )
+    cursor = connection.cursor()
+    
+    # Execute the query
+    cursor.execute("SELECT * FROM users WHERE role_id=3")
+    
+    # Fetch all the results
+    results = cursor.fetchall()
+    
+    # Close the connection
+    connection.close()
+    
+    # Return the results
+    return results

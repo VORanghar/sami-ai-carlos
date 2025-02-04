@@ -1,6 +1,6 @@
 from flask import Flask
 from controllers.auth_controller import register, login,logout
-from controllers.file_controller import upload_file
+from controllers.file_controller import upload_file,getListingExternalClient
 from flask_cors import CORS
 from flask_caching import Cache
 
@@ -16,6 +16,7 @@ def create_app():
     app.add_url_rule('/upload', 'upload', upload_file, methods=['POST'])
     #logout route
     app.add_url_rule('/logout', 'logout', logout, methods=['POST'])
+    app.add_url_rule('/get-listing-external-client', 'external_client_listing', getListingExternalClient, methods=['GET'])
 
     return app
 

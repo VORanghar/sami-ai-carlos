@@ -12,7 +12,7 @@ def register():
     password = data.get('password')
     role_id = data.get('role_id')
     if not role_id:
-        role_id = 1
+        role_id = 0
     else:
         role_id = int(role_id)
 

@@ -167,7 +167,7 @@ def authenticate_user(email, password):
 
 
 def logout_user(token):
-    from sami_ai_python.app import SECRET_KEY  # Import SECRET_KEY from app.py
+    from .sami_ai_python.app import SECRET_KEY  # Import SECRET_KEY from app.py
     if not token:
         return {'message': 'Token is missing'}, 400
 
