@@ -112,7 +112,50 @@ def process_uploaded_file(file):
 #     return results
 
 
-def getDataExternalClient(role_id=None):
+# def getDataExternalClient(role_id=None):
+#     try:
+#         # Connect to the database
+#         connection = mysql.connector.connect(
+#             host="localhost",
+#             user="root",
+#             password="",
+#             database="sami_ai"
+#         )
+#         cursor = connection.cursor()
+
+#         # Execute the query
+#         if role_id:
+#             query = "SELECT * FROM users WHERE role_id = %s"
+#             cursor.execute(query, (role_id,))
+#         else:
+#             query = "SELECT * FROM users"
+#             cursor.execute(query)
+
+#         # Fetch all the results
+#         results = cursor.fetchall()
+
+#         # Return the results
+#         return results
+    
+#     except mysql.connector.Error as db_error:
+#         # Handle database connection or query errors
+#         print(f"Database error: {str(db_error)}")
+#         raise  # Re-raise the exception to be handled by the calling function
+
+#     except Exception as e:
+#         # Handle any other errors
+#         print(f"Error in getDataExternalClient: {str(e)}")
+#         raise  # Re-raise the exception
+
+#     finally:
+#         # Ensure that the database connection and cursor are always closed
+#         if cursor:
+#             cursor.close()
+#         if connection:
+#             connection.close()
+
+
+def getDataExternalClient(role_id=None, page=1, per_page=10):
     try:
         # Connect to the database
         connection = mysql.connector.connect(
@@ -123,29 +166,40 @@ def getDataExternalClient(role_id=None):
         )
         cursor = connection.cursor()
 
-        # Execute the query
+        # Calculate the OFFSET based on page and per_page
+        offset = (page - 1) * per_page
+
+        # Execute the query with LIMIT and OFFSET for pagination
         if role_id:
-            query = "SELECT * FROM users WHERE role_id = %s"
-            cursor.execute(query, (role_id,))
+            query = "SELECT * FROM users WHERE role_id = %s LIMIT %s OFFSET %s"
+            cursor.execute(query, (role_id, per_page, offset))
         else:
-            query = "SELECT * FROM users"
-            cursor.execute(query)
+            query = "SELECT * FROM users LIMIT %s OFFSET %s"
+            cursor.execute(query, (per_page, offset))
 
         # Fetch all the results
         results = cursor.fetchall()
 
-        # Return the results
-        return results
-    
+        # Get the total number of items (without LIMIT and OFFSET)
+        count_query = "SELECT COUNT(*) FROM users"
+        if role_id:
+            count_query = "SELECT COUNT(*) FROM users WHERE role_id = %s"
+            cursor.execute(count_query, (role_id,))
+        else:
+            cursor.execute(count_query)
+
+        total_items = cursor.fetchone()[0]  # Get the total number of rows
+
+        # Return both the results and the total item count
+        return results, total_items
+
     except mysql.connector.Error as db_error:
-        # Handle database connection or query errors
         print(f"Database error: {str(db_error)}")
-        raise  # Re-raise the exception to be handled by the calling function
+        raise
 
     except Exception as e:
-        # Handle any other errors
         print(f"Error in getDataExternalClient: {str(e)}")
-        raise  # Re-raise the exception
+        raise
 
     finally:
         # Ensure that the database connection and cursor are always closed
