@@ -158,13 +158,26 @@ def process_uploaded_file(file):
 def getDataExternalClient(role_id=None, page=1, per_page=10):
     try:
         # Connect to the database
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="admin",
-            password="Mrmoon@1234",
-            database="sami_ai"
+        # connection = mysql.connector.connect(
+        #     host="localhost",
+        #     user="root",
+        #     password="",
+        #     database="sami_ai"
+        # )
+        host = os.getenv("DB_HOST")
+        user = os.getenv("DB_USER")
+        password = os.getenv("DB_PASSWORD")
+        database = os.getenv("DATABASE")
+
+        # Establish a connection to the MySQL database using the loaded credentials
+        conn = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
         )
-        cursor = connection.cursor()
+        #cursor = connection.cursor()
+        cursor = conn.cursor()
 
         # Calculate the OFFSET based on page and per_page
         offset = (page - 1) * per_page
@@ -205,26 +218,32 @@ def getDataExternalClient(role_id=None, page=1, per_page=10):
         # Ensure that the database connection and cursor are always closed
         if cursor:
             cursor.close()
-        if connection:
-            connection.close()
+        if conn:
+            conn.close()
 
 
 #delete user by id starts here
 
 def delete_user_by_id(user_id):
     try:
-        # Establish a connection to the MySQL database
+        # Retrieve the database credentials from the environment variables
+        host = os.getenv("DB_HOST")
+        user = os.getenv("DB_USER")
+        password = os.getenv("DB_PASSWORD")
+        database = os.getenv("DATABASE")
+
+        # Establish a connection to the MySQL database using the loaded credentials
         conn = mysql.connector.connect(
-            host="your_host",           # e.g. "localhost"
-            user="your_username",       # e.g. "root"
-            password="your_password",   # your database password
-            database="your_database"    # your database name
+            host=host,
+            user=user,
+            password=password,
+            database=database
         )
         cursor = conn.cursor()
 
         # Write the delete query, using placeholders to avoid SQL injection
         delete_query = "DELETE FROM users WHERE id = %s"
-        
+
         # Execute the query with the user ID
         cursor.execute(delete_query, (user_id,))
         
@@ -235,14 +254,17 @@ def delete_user_by_id(user_id):
         if cursor.rowcount > 0:
             return True
         else:
+            print(f"No rows affected when trying to delete user with ID {user_id}.")
             return False
         
     except mysql.connector.Error as e:
         print(f"Error deleting user: {e}")
         return False
     finally:
-        cursor.close()
-        conn.close()
-
+        # Always ensure the cursor and connection are closed
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 #ends here            

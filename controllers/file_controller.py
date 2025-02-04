@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from models.file_model import process_uploaded_file,getDataExternalClient
+from models.file_model import process_uploaded_file,getDataExternalClient,delete_user_by_id
 from views.responses import json_response
 
 # File upload route
@@ -141,7 +141,17 @@ def getListingExternalClient():
 
 
 #delete user functionality starts here
-
+def delete_user(user_id):
+    # Call the delete_user_by_id function with the provided user_id
+    result = delete_user_by_id(user_id)
+    
+    # Add more detailed logging here
+    if result:
+        # Return a successful response (could be a redirect or JSON)
+        return jsonify({"message": "Deleted successfully", "user_id": user_id}), 200
+    else:
+        # Return a failure response (could be a JSON error message)
+        return jsonify({"message": f"Failed to delete user with ID {user_id}."}), 404
 
 #ends here
 

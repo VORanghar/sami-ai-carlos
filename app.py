@@ -1,6 +1,6 @@
 from flask import Flask
 from controllers.auth_controller import register, login,logout
-from controllers.file_controller import upload_file,getListingExternalClient
+from controllers.file_controller import upload_file,getListingExternalClient,delete_user
 from flask_cors import CORS
 from flask_caching import Cache
 
@@ -14,7 +14,7 @@ def create_app():
     app.add_url_rule('/register', 'register', register, methods=['POST'])
     app.add_url_rule('/login', 'login', login, methods=['POST'])
     app.add_url_rule('/upload', 'upload', upload_file, methods=['POST'])
-    #app.add_url_rule('/users/delete/<int:user_id>', 'delete', delete_user, methods=['DELETE'])
+    app.add_url_rule('/users/delete/<int:user_id>', 'delete', delete_user, methods=['DELETE'])
     #logout route
     app.add_url_rule('/logout', 'logout', logout, methods=['POST'])
     app.add_url_rule('/get-listing', 'external_client_listing', getListingExternalClient, methods=['GET'])
